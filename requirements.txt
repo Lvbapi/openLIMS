@@ -7,6 +7,7 @@ cffi==1.13.2
 chardet==3.0.4
 Click==7.0
 codecov==2.0.15
+colorhash==1.0.3
 coverage==5.0.3
 decorator==4.4.1
 Flask==1.1.1
@@ -19,6 +20,7 @@ Flask-Principal==0.4.0
 Flask-Security==3.0.0
 Flask-SQLAlchemy==2.4.1
 Flask-WTF==0.14.2
+gunicorn==20.1.0
 htmlmin==0.1.12
 idna==2.8
 importlib-metadata==1.5.0
@@ -37,6 +39,7 @@ pyparsing==2.4.6
 pytest==5.3.5
 pytest-cov==2.8.1
 pytest-flask==0.15.1
+python-dateutil==2.8.1
 pytz==2019.3
 requests==2.22.0
 six==1.14.0
@@ -48,6 +51,7 @@ urllib3==1.25.8
 validators==0.14.2
 wcwidth==0.1.8
 Werkzeug==0.16.1
+wsgiapp==0.0.1
 WTForms==2.2.1
 WTForms-Alchemy==0.16.9
 WTForms-Components==0.10.4
