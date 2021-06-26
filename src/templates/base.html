@@ -57,6 +57,10 @@
         // init dropdowns
         $('.ui.dropdown').dropdown();
         $('.ui.accordion').accordion();
+
+        $(document).on('change', 'input[type=datetime-local]', function(){
+            this.value = this.value.substr(0, 16);
+        })
       });
     </script>
     {% block script %}{% endblock %}
