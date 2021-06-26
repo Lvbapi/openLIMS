@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} Parameter{% endblock %}
+{% block content %}
+
+<div class="ui one column grid container">
+     <div class="column">
+    <form action="{% if edit %} {{ url_for('parameters.edit', parameter_id=parameter.id) }} {% else %} {{ url_for('parameters.add') }} {% endif %}" method="POST" class="ui form">
+      {% for f in form %}
+             <div class="field">
+                {% if f.name == 'id' %}
+                  {{ f }}
+                {% elif f.type in ['QuerySelectMultipleField', 'QuerySelectField', 'SelectField'] %}
+                  {{ f.label }}
+                  {{ f(class='ui fluid search dropdown') }}
+                {% else %}
+                  {{ f.label }}
+                  {{ f }}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% for attribute in attributes %}
+            <div class="field">
+                <label for='{{ attribute.name }}'>{{ attribute.name }}</label>
+                <input id='{{ attribute.name }}' type="text" name="{{ attribute.name }}" value="{% if edit %}{{ parameter.attribute_values.get(attribute.name) }}{% endif %}">   
+            </div>
+        {% endfor %}
+        <button id="options_add" type="button" class='ui green button'>Add Option</button>
+        <div class="field" id='options'></div>
+        <a class="ui red left floated button" href="{{ url_for('parameters.index') }}">Cancel</a>
+        <button type='submit' class="ui blue right floated button">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+  <script>
+    $(document).ready(function(){
+      {% if edit %}
+        $('#procedure_id').val('{{ parameter.procedure_id }}');
+        $('#procedure_id').trigger('change');
+
+        $('#datatype').val('{{ parameter.get_datatype()|lower }}');
+        $('#datatype').trigger('change');
+      {% endif %}
+
+      {% if not edit or not parameter.get_datatype()|lower == 'option' %}
+        $('#options_add').hide();
+      {% endif %}
+
+    })
+
+    $(document).on('click', '#options_add', function(){
+      $('#options').append('<label for="option">Option</label><input id="option" type="text" name="option[]">');
+    })
+
+    $(document).on('change', '#datatype', function(){
+      if($('#datatype option').filter(':selected').text() == 'Option'){
+        {% if edit and parameter.get_datatype()|lower == 'option' %}
+          {% for option in parameter.options %}
+            $('#options').append('<label for="option">Options</label><input id="option" type="text" name="option[]" value="{{ option.name }}">');
+          {% endfor %}
+        {% else %}
+          $('#options').append('<label for="option">Option</label><input id="option" type="text" name="option[]">');
+        {% endif %}
+        $('#options_add').show();
+      } else {
+        $('#options *').remove();
+        $('#options_add').hide();
+      }
+    })
+
+
+  </script>
+{% endblock %}

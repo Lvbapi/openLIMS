@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Collect Data{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+     <div class="column">
+      <h1>Collect Data For {{ schedule.get_procedure() }}</h1>
+      <form class="ui form" action="{{ url_for('site.collect_data', schedule_id=schedule.id) }}" method="POST" enctype="multipart/form-data">
+        <table class="ui striped table">
+        	<thead>
+        		<tr>
+        		  <th>Specimen</th>
+              {% for parameter in schedule.get_procedure().parameters %}
+                <th>{{ parameter.name|uc_words }}</th>
+              {% endfor %}
+  		      </tr>
+      	  </thead>
+      	  <tbody>
+      	      {% for specimen in schedule.specimens %}
+              {% set i = specimen.id %}
+      	      <tr>
+            		<td>{{ specimen.name }}</td>
+                {% for parameter in schedule.get_procedure().parameters %}
+                  {% set datatype = parameter.get_datatype() %}
+                  {% if datatype == 'Option' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <select class='ui fluid search dropdown' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                          {% for option in parameter.options %}
+                            <option value='{{ option.id }}'>{{ option.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Decimal' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='number' step="0.01" min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Integer' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='number' min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Character' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='text' minlength="{{ parameter.datamin }}" maxlength='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Boolean' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='checkbox' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Datetime' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='datetime-local' min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Date' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='date-local' min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Time' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <input type='time-local' min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                      </div>
+                    </td>
+                  {% elif datatype == 'Text' %}
+                    <td>
+                      <div class="field {% if parameter.required %}error{% endif %}">
+                        <textarea minlength="{{ parameter.datamin }}" maxlength='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}></textarea>
+                      </div>
+                    </td>
+                  {% elif datatype == 'File' %}
+                    <td>
+                      <input type="file" name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                    </td>
+                  {% else %}
+                    <td>
+                      <div class="field">
+                        <p class="ui red text">There was an error retrieving this parameter</p>
+                      </div>
+                    </td>
+                  {% endif %}
+                {% endfor %}
+      	  	</tr>
+            {% endfor %}
+      	  </tbody>
+      	  </table>
+          <button class="ui green button" type="submit">Submit</button>
+        </form>
+     </div>
+</div>
+{% endblock %}

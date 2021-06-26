@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ procedure.name }}{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>{{ procedure.name }}
+	      	<a class="ui green right floated button" href="{{ url_for('parameters.add') }}">Add Parameter</a>
+	      	<a class="ui blue right floated button" href="{{ url_for('procedures.edit', procedure_id=procedure.id) }}">Edit Procedure</a>
+	    </h1>
+	    <p>{{ procedure.description }}</p>
+	    
+	    {% if procedure.attributes|length > 0 %}
+		    <h3>Attributes</h3>
+		    {% for attribute in procedure.attributes %}
+		      <p>{{ attribute.name|uc_words }}: {{ procedure.attribute_values.get(attribute) }}</p>
+		    {% endfor %}
+	    {% endif %}
+
+	    {% if procedure.parameters|length > 0 %}
+		    <h3>Parameters</h3>
+		    {% for parameter in procedure.parameters %}
+		    	<p>{{ parameter.name|uc_words }}</p>
+		    {% endfor %}
+		{% else %}
+			<h2>This Procedure Has No Parameters</h2>
+		{% endif %}
+
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} Schedule{% endblock %}
+{% block content %}
+
+<div class="ui one column grid container">
+     <div class="column">
+    <form action="{% if edit %} {{ url_for('schedules.edit', schedule_id=schedule.id) }} {% else %} {{ url_for('schedules.add') }} {% endif %}" method="POST" class="ui form">
+      {% for f in form %}
+             <div class="field">
+                {% if f.name == 'id' %}
+                  {{ f }}
+                {% elif f.type in ['QuerySelectMultipleField', 'QuerySelectField', 'SelectField'] %}
+                  {{ f.label }}
+                  {{ f(class='ui fluid search dropdown') }}
+                {% elif f.name == 'start_datetime' or f.name == 'end_datetime' %}
+                  {{ f.label }}
+                  {{ f(type='datetime-local') }}
+                {% else %}
+                  {{ f.label }}
+                  {{ f }}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+
+        {% for attribute in attributes %}
+            <div class="field">
+                <label for='{{ attribute.name }}'>{{ attribute.name }}</label>
+                <input id='{{ attribute.name }}' type="text" name="{{ attribute.name }}" value="{% if edit %}{{ schedule.attribute_values.get(attribute.name) }}{% endif %}">   
+            </div>
+        {% endfor %}
+        <a class="ui red left floated button" href="{{ url_for('schedules.index') }}">Cancel</a>
+        <button type='submit' class="ui blue right floated button">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+  {% if edit %}
+  <script>
+    $(document).ready(function(){
+      {% if schedule.specimens|length > 0 %}
+        var specimens = [];
+        {% for specimen in schedule.specimens %}
+          specimens.push('{{ specimen.id }}');
+        {% endfor %}
+        $('#specimens').val(specimens);
+        $('#specimens').trigger('change');
+      {% endif %}
+
+      {% if schedule.users|length > 0 %}
+        var users = [];
+        {% for user in schedule.users %}
+          users.push('{{ user.id }}');
+        {% endfor %}
+        $('#users').val(users);
+        $('#users').trigger('change');
+      {% endif %}
+
+      $('#procedure_id').val('{{ schedule.procedure_id }}');
+      $('#procedure_id').trigger('change');
+
+    })
+  </script>
+  {% endif %}
+{% endblock %}

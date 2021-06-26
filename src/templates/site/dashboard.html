@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block style %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.7.2/main.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="ui grid container">
+	<div class="ui cards">
+		{% for project in data.projects %}
+		<div class="ui card">
+		  <div class="content">
+		    <div class="header">{{ project.name }}</div>
+		  </div>
+		  <div class="content">
+		    <h4 class="ui sub header">Description</h4>
+		    <div class="ui small feed">
+		      <div class="event">
+		        <div class="content">
+		          <div class="summary">
+		             <p>{{ project.description }}</p>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="extra content">
+		    <a class="ui button" href="{{ url_for('projects.view', project_id=project.id) }}">View Project</a>
+		  </div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+<div class="ui grid container">
+	<div id='calendar' style="width: 100%;"></div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.7.2/main.min.js"></script>
+	<script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          height: "auto",
+          editable: true,
+          slotMinTime: '06:00:00',
+          slotMaxTime: '20:00:00',
+          eventResize: function(info) {
+
+		    if (!confirm(info.event.title + " end is now " + info.event.end.toISOString() + " is this okay?")) {
+		      info.revert();
+		    } else {
+		    	$.ajax({
+				  type: "POST",
+				  url: '{{ url_for("schedules.update") }}',
+				  data: JSON.stringify({'schedule_id': info.event.extendedProps.schedule_id, 'start_datetime': info.event.startStr, 'end_datetime': info.event.endStr}),
+				  success: function(msg){
+				  	console.log(msg);
+				  },
+				  contentType: "application/json",
+        		  dataType: "json",
+				});
+		    }
+		  },
+		  eventDrop: function(info) {
+
+		    if (!confirm(info.event.title + " was dropped on " + info.event.start.toISOString() + " Are you sure about this change?")) {
+		      info.revert();
+		    } else {
+		    	$.ajax({
+				  type: "POST",
+				  url: '{{ url_for("schedules.update") }}',
+				  data: JSON.stringify({'schedule_id': info.event.extendedProps.schedule_id, 'start_datetime': info.event.startStr, 'end_datetime': info.event.endStr}),
+				  success: function(msg){
+				  	console.log(msg);
+				  },
+				  contentType: "application/json",
+        		  dataType: "json",
+				});
+		    }
+		  },
+          events: [
+          {% for schedule in data.schedules %}
+		    {
+		      title: '{{ schedule.get_procedure() }}',
+		      start: '{{ schedule.start_datetime }}',
+		      end: '{{ schedule.end_datetime }}',
+		      backgroundColor: '{{ schedule.get_color() }}',
+		      url: '{{ url_for("schedules.view", schedule_id=schedule.id) }}',
+		      extendedProps: {
+		        schedule_id: '{{ schedule.id }}'
+		      },
+		    },
+		    {% endfor %}
+        ]});
+        calendar.render();
+      });
+
+    </script>
+{% endblock %}

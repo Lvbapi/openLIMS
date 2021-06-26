@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Add Specimen{% endblock %}
+{% block content %}
+
+<div class="ui one column grid container">
+     <div class="column">
+    <form action="{{ url_for('specimens.add') }}" method="POST" class="ui form">
+        {% for f in form %}
+             <div class="field">
+                {% if f.name == 'id' %}
+                  {{ f }}
+                {% else %}
+                  {{ f.label }}
+                  {{ f }}
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% for attribute in attributes %}
+            <div class="field">
+                <label for='{{ attribute.name }}'>{{ attribute.name|uc_words }}</label>
+                <input id='{{ attribute.name }}' {% if 'date' in attribute.name %} type='datetime-local' {% else %} type="text" {% endif %} name="{{ attribute.name }}" value="{{ specimen.attribute_values.get(attribute.name) }}">		
+            </div>
+        {% endfor %}
+        <a class="ui red left floated button" href="{{ url_for('specimens.index') }}">Cancel</a>
+        <button type='submit' class="ui blue right floated button">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+

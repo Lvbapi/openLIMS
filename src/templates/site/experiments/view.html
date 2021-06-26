@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Experiment {{ experiment.id }}{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>Experiment: {{ experiment.id }}</h1>
+	    <p>Date: {{ experiment.get_datetime().strftime('%m/%d/%Y %H:%M') }}</p>
+	    <p>Project: {{ experiment.get_project() }}</p>
+	    <p>Procedure: {{ experiment.get_procedure() }}</p>
+	    <p>Specimen: {{ experiment.get_specimen() }}</p>
+	    {% for attribute in experiment.attributes %}
+	    	<p>{{ attribute.name|uc_words }}: {{ experiment.attribute_values.get(attribute) }}</p>
+	    {% endfor %}
+
+	    {% for data_point in experiment.data_points %}
+	    	{% if data_point.get_parameter().get_datatype() == 'Decimal' %}
+      	  		<p>{{ data_point.get_parameter() }}: {{ data_point.get_value().value|round(2) }}</p>
+            {% else %}
+	    		<p>{{ data_point.get_parameter() }}: {{ data_point.get_value() }}</p>
+            {% endif %}
+	    {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

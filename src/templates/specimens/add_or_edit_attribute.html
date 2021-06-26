@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} Specimen Attribute{% endblock %}
+{% block content %}
+
+<div class="ui one column grid container">
+     <div class="column">
+      <h1>{% if edit %}Edit{% else %}Add{% endif %} Specimen Attribute
+        {% if edit %}<a class="ui red right floated button" href="{{ url_for('specimens.attribute_delete', specimen_attribute_id=specimen_attribute_id) }}">Delete Attribute</a>{% endif %}
+      </h1>
+    <form action="{% if edit %}{{ url_for('specimens.attribute_edit', specimen_attribute_id=specimen_attribute_id) }}{% else %}{{ url_for('specimens.attribute_add') }}{% endif %}" method="POST" class="ui form">
+        {% for f in form %}
+             <div class="field">
+                {% if f.name == 'submit' %}
+                  <a class="ui red left floated button" href="{{ url_for('specimens.index') }}">Cancel</a>
+                  {{ f(class='ui blue right floated button') }}
+                {% elif f.name == 'id' %}
+                  {{ f }}
+                {% else %}
+                  {{ f.label }}
+                  {{ f }}
+                {% endif %}
+              </div>
+        {% endfor %}
+    </form>
+  </div>
+</div>
+{% endblock %}

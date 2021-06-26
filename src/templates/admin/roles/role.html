@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Roles{% endblock %}
+{% block content %}
+
+<div class="ui stackable grid">
+  <div class="four wide column"></div>
+  <div class="ten wide column">
+    <form action="{% if form.id %} {{url_for('admin.edit_role', role_id=form.id.data) }} {% else %} {{ url_for('admin.create_role') }} {% endif %}" method="POST" name="post_form" class="ui form">
+        {% for f in form %}
+             <div class="field">
+            		{% if f.name == 'submit' %}
+                  <a class="ui red left floated button" href="{{ url_for('admin.role_list') }}">Cancel</a>
+            			{{ f(class='ui blue right floated button') }}
+                {% elif f.name == 'id' %}
+                  {{ f }}
+                {% else %}
+            			{{ f.label }}
+                  {{ f(placeholder=f.name.replace('_', ' ')) }}
+            		{% endif %}
+              </div>
+        {% endfor %}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

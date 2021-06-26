@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Experiments{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>Experiments</h1>
+	    <table class="ui striped table">
+	      	<thead>
+		      	<tr>
+		      		<th>Date</th>
+			      	<th>Project</th>
+			      	<th>Procedure</th>
+			      	{% for attribute in attributes %}
+			      		<th>{{ attribute.name|uc_words }}</th>
+			      	{% endfor %}
+			      	<th>Data</th>
+		      	</tr>
+		  	</thead>
+	  		<tbody>
+			    {% for experiment in experiments %}
+					<tr>
+						<td>{{ experiment.get_datetime().strftime('%m/%d/%Y %H:%M') }}</td>
+				      	<td>{{ experiment.get_project() }}</td>
+				      	<td>{{ experiment.get_procedure() }}</td>
+				      	{% for attribute in attributes %}
+				      		<td>{{procedure.attributes.get(attribute.name)}}</td>
+				      	{% endfor %}
+				      	<td>
+				      		<a class='ui blue vertical animated button' href="{{ url_for('site.experiments_view', experiment_id=experiment.id ) }}">
+			      				<div class="hidden content">View</div>
+				      			<div class="visible content">
+				      				<i class="table icon" aria-hidden="true"></i>
+				      			</div>
+				      		</a>
+				      	</td>
+				    </tr>
+				{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+{% endblock %}

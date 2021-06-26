@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>Projects 	
+	      	<a class="ui yellow right floated button" href="{{ url_for('projects.attribute_add') }}">Add Attribute</a>
+	      	<a class="ui green right floated button" href="{{ url_for('projects.add') }}">Add Project</a>
+	    </h1>
+	    <table class="ui striped table">
+      	<thead>
+	      <tr>
+	      	<th>Project</th>
+	      	<th>Description</th>
+	      	{% for attribute in attributes %}
+	      		<th><a href='{{ url_for("projects.attribute_edit", project_attribute_id=attribute.id) }}'>{{ attribute.name|uc_words }}</a></th>
+	      	{% endfor %}
+	      </tr>
+	  </thead>
+	  <tbody>
+	      {% for project in projects %}
+	      <tr>
+	      	<td nowrap><a href="{{ url_for('projects.view', project_id=project.id) }}">{{ project.name }}</a></td>
+	      	<td>{{ project.description }}</td>
+	      	{% for attribute in attributes %}
+	      		<td>{{project.attributes.get(attribute.name)}}</td>
+	      	{% endfor %}
+	      </tr>
+	      {% endfor %}
+	  </tbody>
+	  </table>
+    </div>
+</div>
+{% endblock %}

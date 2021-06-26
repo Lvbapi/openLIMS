@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>{{ project.name }}
+	      	<a class="ui green right floated button" href="{{ url_for('procedures.add') }}">Add Procedure</a>
+	      	<a class="ui blue right floated button" href="{{ url_for('projects.edit', project_id=project.id) }}">Edit Project</a>
+	      	<a class="ui red right floated button" href="{{ url_for('projects.delete', project_id=project.id) }}">Delete Project</a>
+	    </h1>
+	    <p>{{ project.description }}</p>
+	    {% for attribute in project.attributes %}
+	    	<p>{{ attribute.name|uc_words }}: {{ project.attribute_values.get(attribute) }}</p>
+	    {% endfor %}
+    </div>
+</div>
+{% endblock %}

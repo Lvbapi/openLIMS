@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ parameter.name }}{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>{{ parameter.name }}
+	      	<a class="ui blue right floated button" href="{{ url_for('parameters.edit', parameter_id=parameter.id) }}">Edit Parameter</a>
+	    </h1>
+	    <p>Data Type: {{ parameter.get_datatype() }}</p>
+	    <p>Data Min: {{ parameter.datamin }}</p>
+	    <p>Data Max: {{ parameter.datamax }}</p>
+	    <p>Required: {{ parameter.required }}</p>
+
+	    {% if parameter.get_datatype() == 'Option' %}
+	    	<h3>Options</h3>
+	    	{% for option in parameter.options %}
+	    		<p>{{ option.name }}</p>
+	    	{% endfor %}
+	    {% endif %}
+	    
+	    {% if parameter.attributes|length > 0 %}
+		    <h3>Attributes</h3>
+		    {% for attribute in parameter.attributes %}
+		      <p>{{ attribute }}: {{ parameter.attribute_values.get(attribute) }}</p>
+		    {% endfor %}
+	    {% endif %}
+
+    </div>
+</div>
+{% endblock %}

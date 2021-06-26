@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+
+<div class="ui stackable grid">
+  <div class="four wide column"></div>
+  <div class="ten wide column">
+    <form action="{% if form.id %} {{url_for('admin.edit_user', user_id=form.id.data) }} {% else %} {{ url_for('admin.create_user') }} {% endif %}" method="POST" class="ui form">
+        {% for f in form %}
+             <div class="field">
+            		{% if f.name != 'submit' %}
+                  {% if f.name == 'id' %}
+                    {{ f }}
+                  {% elif f.type in ['QuerySelectMultipleField', 'QuerySelectField', 'SelectField'] %}
+                    {{ f.label }}
+                    {{ f(class='ui fluid search dropdown') }}
+                  {% else %}
+              			{{ f.label }}
+                    {{ f(placeholder=f.name.replace('_', ' ')) }}
+              		{% endif %}
+                {% endif %}
+              </div>
+        {% endfor %}
+          <div class="field">
+            <a class="ui red left floated button" href="{{ url_for('admin.user_list') }}">Cancel</a>
+            {{ form.submit(class='ui blue right floated button') }}
+          </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+{% if form.id %}
+  <script>
+    $(document).ready(function(){
+
+      {% if user.roles|length > 0 %}
+        var roles = [];
+        {% for role in user.roles %}
+          roles.push('{{ role.id }}');
+        {% endfor %}
+        $('#roles').val(roles);
+        $('#roles').trigger('change');
+      {% endif %}
+
+    })
+  </script>
+{% endif %}
+{% endblock %}

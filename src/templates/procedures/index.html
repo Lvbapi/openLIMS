@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Procedures{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>Procedures 	
+	      	<a class="ui yellow right floated button" href="{{ url_for('procedures.attribute_add') }}">Add Attribute</a>
+	      	<a class="ui green right floated button" href="{{ url_for('procedures.add') }}">Add Procedure</a>
+	    </h1>
+	    <table class="ui striped table">
+      	<thead>
+	      <tr>
+	      	<th>Project</th>
+	      	<th>Procedure</th>
+	      	<th>Description</th>
+	      	{% for attribute in attributes %}
+	      		<th><a href='{{ url_for("procedures.attribute_edit", procedure_attribute_id=attribute.id) }}'>{{ attribute.name|uc_words }}</a></th>
+	      	{% endfor %}
+	      	<th>Data</th>
+	      </tr>
+	  </thead>
+	  <tbody>
+	      {% for procedure in procedures %}
+	      <tr>
+	      	<td>{{ procedure.get_project_name() }}</td>
+	      	<td nowrap><a href="{{ url_for('procedures.view', procedure_id=procedure.id) }}">{{ procedure.name }}</a></td>
+	      	<td>{{ procedure.description }}</td>
+	      	{% for attribute in attributes %}
+	      		<td>{{procedure.attributes.get(attribute.name)}}</td>
+	      	{% endfor %}
+	      	<td>
+	      		<a class='ui blue vertical animated button' href="{{ url_for('site.procedure_data', procedure_id=procedure.id) }}">
+      				<div class="hidden content">View</div>
+	      			<div class="visible content">
+	      				<i class="table icon" aria-hidden="true"></i>
+	      			</div>
+	      		</a>
+	      	</td>
+	      </tr>
+	      {% endfor %}
+	  </tbody>
+	  </table>
+    </div>
+</div>
+{% endblock %}

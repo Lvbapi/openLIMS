@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Schedule {{ schedule.id }}{% endblock %}
+
+{% block content %}
+
+<div class="ui grid container">
+  <div class="column">
+    <h1>Schedule {{ schedule.id }}
+        <a class="ui red right floated button" href="{{ url_for('schedules.delete', schedule_id=schedule.id) }}">Delete Schedule</a>
+        <a class="ui blue right floated button" href="{{ url_for('schedules.edit', schedule_id=schedule.id) }}">Edit Schedule</a>
+    </h1>
+    <h2>{{ schedule.get_procedure() }}</h2>
+    <h4>Scheduled from {{ schedule.get_converted_datetime(schedule.start_datetime) }} to {{ schedule.get_converted_datetime(schedule.end_datetime) }}</h4>
+
+    {% if schedule.users|length > 0 %}
+      <h3>Assigned To</h3>
+      {% for user in schedule.users %}
+        <p>{{ user }}</p>
+      {% endfor %}
+    {% else %}
+      <h2>No Users Assigned</h2>
+    {% endif %}
+    
+    {% if schedule.specimens|length > 0 %}
+      <h3>Specimens</h3>
+      {% for specimen in schedule.specimens %}
+        <p>{{ specimen }}</p>
+      {% endfor %}
+    {% else %}
+      <h2>No Specimens Selected</h2>
+    {% endif %}
+
+    {% if schedule.attributes|length > 0 %}
+      <h3>Attributes</h3>
+      {% for attribute in schedule.attributes %}
+        <p>{{ attribute.name|uc_words }}: {{ schedule.attribute_values.get(attribute) }}</p>
+      {% endfor %}
+    {% endif %}
+
+    {% if schedule.experiments|length == 0 %}
+      <a class="ui green button" href="{{ url_for('site.collect_data', schedule_id=schedule.id) }}">Collect Data</a>
+    {% else %}
+      <h3>Specimen Data</h3>
+      {% for experiment in schedule.experiments %}
+        <a class='ui blue vertical animated button' href="{{ url_for('site.experiments_view', experiment_id=experiment.id ) }}">
+          <div class="hidden content">View</div>
+          <div class="visible content">
+            {{ experiment.get_specimen() }}
+          </div>
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
+

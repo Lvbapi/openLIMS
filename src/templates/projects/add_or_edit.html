@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} Project{% endblock %}
+{% block content %}
+
+<div class="ui one column grid container">
+     <div class="column">
+    <form action="{% if edit %} {{ url_for('projects.edit', project_id=project.id) }} {% else %} {{ url_for('projects.add') }} {% endif %}" method="POST" class="ui form">
+      {% for f in form %}
+             <div class="field">
+                {% if f.name == 'id' %}
+                  {{ f }}
+                {% else %}
+                  {{ f.label }}
+                  {{ f }}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+
+        {% for attribute in attributes %}
+            <div class="field">
+                <label for='{{ attribute.name }}'>{{ attribute.name }}</label>
+                <input id='{{ attribute.name }}' type="text" name="{{ attribute.name }}" value="{% if edit %}{{ project.attribute_values.get(attribute.name) }}{% endif %}">		
+            </div>
+        {% endfor %}
+        <a class="ui red left floated button" href="{{ url_for('projects.index') }}">Cancel</a>
+        <button type='submit' class="ui blue right floated button">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+

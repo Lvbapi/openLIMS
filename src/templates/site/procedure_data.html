@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ procedure }} Data{% endblock %}
+
+<!-- this needs to show experiment data filtered by procedure_id -->
+
+{% block content %}
+<div class="ui one column grid container">
+     <div class="column">
+      <h1>{{ procedure }} Data</h1>
+      <table class="ui striped table">
+      	<thead>
+      		<tr>
+      		  <th>Specimen</th>
+      		
+	      	  {% for parameter in procedure.parameters %}
+	      	  		<th>{{ parameter.name|uc_words }}</th>
+		      {% endfor %}
+		  </tr>
+	  </thead>
+	  <tbody>
+	      {% for experiment in experiments %}
+	      <tr>
+      		<td>{{ experiment.get_specimen() }}</td>
+      	
+      	  {% for data_point in experiment.data_points %}
+            {% if data_point.get_parameter().get_datatype() == 'Decimal' %}
+      	  		<td>{{ data_point.get_value().value|round(2) }}</td>
+            {% else %}
+              <td>{{ data_point.get_value() }}</td>
+            {% endif %}
+	      {% endfor %}
+	  	</tr>
+      {% endfor %}
+	  </tbody>
+	  </table>
+     </div>
+</div>
+{% endblock %}

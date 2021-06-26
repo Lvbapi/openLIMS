@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ specimen.name }}{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>{{ specimen.name }}
+	      	<a class="ui blue right floated button" href="{{ url_for('specimens.edit', specimen_id=specimen.id) }}">Edit Specimen</a>
+	      	<a class="ui red right floated button" href="{{ url_for('specimens.delete', specimen_id=specimen.id) }}">Delete Specimen</a>
+	    </h1>
+	    <p>{{ specimen.description }}</p>
+	    {% for attribute in specimen.attributes %}
+	    	<p>{{ attribute|uc_words }}: {{ specimen.attribute_values.get(attribute) }}</p>
+	    {% endfor %}
+    </div>
+</div>
+{% endblock %}

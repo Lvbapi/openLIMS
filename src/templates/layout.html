@@ -1,0 +1,97 @@
+{% macro menu() -%}
+<div class="ui container">
+  <div class="ui inverted secondary pointing menu">
+    <a class="toc item">
+      <i class="sidebar icon"></i>
+    </a>
+    <a class="item inverted" href="{{ url_for('site.index') }}">OpenLIMS</a>
+    {% if current_user.is_authenticated %}
+    <a class="item inverted" href="{{ url_for('site.dashboard') }}">Dashboard</a>
+
+    <div class="ui dropdown item">
+      Schedule
+       <i class="dropdown icon" aria-hidden="true"></i>
+       <div class="menu">
+          <a class="item" href="{{ url_for('schedules.index') }}">List</a>
+          <a class="item" href="{{ url_for('schedules.calendar') }}">Calendar</a>
+       </div>
+     </div>
+
+    <div class="ui dropdown item">
+      Entities
+       <i class="dropdown icon" aria-hidden="true"></i>
+       <div class="menu">
+          <a class="item" href="{{ url_for('specimens.index') }}">Specimens</a>
+          <a class="item" href="{{ url_for('projects.index') }}">Projects</a>
+          <a class="item" href="{{ url_for('procedures.index') }}">Procedures</a>
+          <a class="item" href="{{ url_for('parameters.index') }}">Parameters</a>
+          <a class="item" href="{{ url_for('site.experiments') }}">Experiments</a>
+       </div>
+     </div>
+
+     <div class="ui simple dropdown item">
+      Procedure Data
+       <i class="dropdown icon" aria-hidden="true"></i>
+       <div class="menu">
+          {% set projects = get_projects %}
+          {% for project in projects %}
+            <div class="item">
+              <i class="dropdown icon"></i>
+              <span class="text">{{ project.name }}</span>
+              <div class="menu">
+                {% for procedure in project.procedures %}
+                  <a class="item" href="{{ url_for('site.procedure_data', procedure_id=procedure.id) }}">{{ procedure.name }}</a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+       </div>
+     </div>
+
+    {% endif %}
+    <div class="right item" style='padding: 0;'>
+    {% if current_user.is_authenticated %}
+     <div class="ui right dropdown item">
+       <i class='user icon' aria-hidden="true"></i>
+       {{ current_user.get_display_name() }}
+       <i class="dropdown icon" aria-hidden="true"></i>
+       <div class="menu">
+         {% if current_user.has_role('admin') %}
+            <a class="item" href="{{ url_for('admin.user_list') }}">Users</a>
+            <a class="item" href="{{ url_for('admin.role_list') }}">Roles</a>
+         {% endif %}
+         <a class="item" href="{{ url_for('auth.logout_view') }}">Logout</a>
+       </div>
+     </div>
+     {% else %}
+     <a class="item inverted" href="{{ url_for('auth.login_view') }}">Login</a>
+     {% endif %}
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro mobile_menu() -%}
+<div class="ui vertical inverted sidebar menu left">
+    <a class="item" href="{{ url_for('site.index') }}">Home</a>
+
+    {% if not current_user.is_authenticated %}
+     <a class="item" href="{{ url_for('auth.login_view') }}">Login</a>
+    {% else %}
+     {% if current_user.has_role('admin') %}
+        <a class="item" href="{{ url_for('admin.user_list') }}">Users</a>
+        <a class="item" href="{{ url_for('admin.role_list') }}">Roles</a>
+     {% endif %}
+     <a class="item" href="{{ url_for('auth.logout_view') }}">Logout</a>
+    {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro footer() -%}
+<div class="ui vertical footer segment m">
+    <div class="ui center aligned text container">
+      <div class="row">
+      </div>
+    </div>
+  </div>
+{%- endmacro %}

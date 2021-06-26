@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block style %}
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+      <div class="content">
+             Log-in to your account
+      </div>
+        <form class="ui form" method="POST" action="">
+            <div class="ui stacked segment">
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="user icon"></i>
+                {{ form.email(placeholder="email") }}
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="lock icon"></i>
+                {{ form.password(placeholder="password") }}
+              </div>
+            </div>
+            <input type='submit' class="ui fluid large teal submit button" value="Login">
+            </div>
+        </form>
+        {% if form.errors %}
+        <div class='ui error message'>
+            <h5>Please check information for errors</h5>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+

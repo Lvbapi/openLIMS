@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} Procedure{% endblock %}
+{% block content %}
+
+<div class="ui one column grid container">
+     <div class="column">
+    <form action="{% if edit %} {{ url_for('procedures.edit', procedure_id=procedure.id) }} {% else %} {{ url_for('procedures.add') }} {% endif %}" method="POST" class="ui form">
+      {% for f in form %}
+             <div class="field">
+                {% if f.name == 'id' %}
+                  {{ f }}
+                {% elif f.type in ['QuerySelectMultipleField', 'QuerySelectField', 'SelectField'] %}
+                  {{ f.label }}
+                  {{ f(class='ui fluid search dropdown') }}
+                {% elif f.name == 'start_datetime' or f.name == 'end_datetime' %}
+                  {{ f.label }}
+                  {{ f(type='datetime-local') }}
+                {% else %}
+                  {{ f.label }}
+                  {{ f }}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+
+        {% for attribute in attributes %}
+            <div class="field">
+                <label for='{{ attribute.name }}'>{{ attribute.name }}</label>
+                <input id='{{ attribute.name }}' type="text" name="{{ attribute.name }}" value="{% if edit %}{{ procedure.attribute_values.get(attribute.name) }}{% endif %}">   
+            </div>
+        {% endfor %}
+        <a class="ui red left floated button" href="{{ url_for('procedures.index') }}">Cancel</a>
+        <button type='submit' class="ui blue right floated button">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+  {% if edit %}
+  <script>
+    $(document).ready(function(){
+
+      $('#project_id').val('{{ procedure.project_id }}');
+      $('#project_id').trigger('change');
+
+    })
+  </script>
+  {% endif %}
+{% endblock %}

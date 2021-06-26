@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Parameters{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+    <div class="column">
+	    <h1>Parameters
+	      	<a class="ui yellow right floated button" href="{{ url_for('parameters.attribute_add') }}">Add Attribute</a>
+	      	<a class="ui green right floated button" href="{{ url_for('parameters.add') }}">Add Parameter</a>
+	    </h1>
+	    <table class="ui striped table">
+	      	<thead>
+		      	<tr>
+		      		<th>Procedure</th>
+			      	<th>Parameter</th>
+			      	<th>Required</th>
+			      	<th>Data Type</th>
+			      	<th>Data Min</th>
+			      	<th>Data Max</th>
+			      	<th>Options</th>
+			      	{% for attribute in attributes %}
+			      		<th><a href='{{ url_for("parameters.attribute_edit", parameter_attribute_id=attribute.id) }}'>{{ attribute.name|uc_words }}</a></th>
+			      	{% endfor %}
+		      	</tr>
+		  	</thead>
+	  		<tbody>
+			    {% for parameter in parameters %}
+					<tr>
+						<td>{{ parameter.get_procedure() }}</td>
+				      	<td><a href="{{ url_for('parameters.view', parameter_id=parameter.id) }}">{{ parameter.name }}</a></td>
+				      	<td>{{ parameter.required }}</td>
+				      	<td>{{ parameter.get_datatype() }}</td>
+				      	<td>
+				      		{% if parameter.datamin %}
+				      			{{ parameter.datamin }}
+				      		{% endif %}
+				      	</td>
+				      	<td>
+				      		{% if parameter.datamax %}
+				      			{{ parameter.datamax }}
+				      		{% endif %}
+				      	</td>
+				      	<td>
+				      		{% for option in parameter.options %}
+				      			{{ option.name }}
+				      		{% endfor %}
+				      	</td>
+				      	{% for attribute in attributes %}
+				      		<td>{{parameter.attributes.get(attribute.name)}}</td>
+				      	{% endfor %}
+				    </tr>
+				{% endfor %}
+			</tbody>
+		</table>
+    </div>
+</div>
+{% endblock %}

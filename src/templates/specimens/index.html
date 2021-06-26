@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Specimens{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+     <div class="column">
+      <h1>Specimens 
+      	<a class="ui yellow right floated button" href="{{ url_for('specimens.attribute_add') }}">Add Attribute</a>
+      	<a class="ui green right floated button" href="{{ url_for('specimens.add') }}">Add Specimen</a>
+      </h1>
+
+      <table class="ui striped table">
+      	<thead>
+	      <tr>
+	      	<th>Name</th>
+	      	{% for attribute in attributes %}
+	      		<th><a href='{{ url_for("specimens.attribute_edit", specimen_attribute_id=attribute.id) }}'>{{ attribute.name|uc_words }}</a></th>
+	      	{% endfor %}
+	      </tr>
+	  </thead>
+	  <tbody>
+	      {% for specimen in specimens %}
+	      <tr>
+	      	<td><a href="{{ url_for('specimens.view', specimen_id=specimen.id) }}">{{ specimen.name }}</a></td>
+	      	{% for attribute in attributes %}
+	      		<td>{{specimen.attributes.get(attribute.name)}}</td>
+	      	{% endfor %}
+	      </tr>
+	      {% endfor %}
+	  </tbody>
+	  </table>
+     </div>
+</div>
+{% endblock %}
