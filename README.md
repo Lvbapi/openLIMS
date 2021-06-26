@@ -9,6 +9,13 @@ This software should be fully functional in its current state.
 However if you are looking to accomplish something else, please contact me and I will do my best to help!
 
 
+Live demo at http://66.175.219.62/
+
+admin login is admin@example.com pw is admin
+
+feel free to play around, resets happen frequently
+
+
 To give OpenLIMS a try:
 1) clone this repo
 2) setup a virtual python envoironment of your choice
