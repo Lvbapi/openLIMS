@@ -51,7 +51,6 @@ urllib3==1.25.8
 validators==0.14.2
 wcwidth==0.1.8
 Werkzeug==0.16.1
-wsgiapp==0.0.1
 WTForms==2.2.1
 WTForms-Alchemy==0.16.9
 WTForms-Components==0.10.4
