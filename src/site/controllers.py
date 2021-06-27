@@ -10,8 +10,10 @@ from src.schedules.models import Schedules
 from flask_admin import helpers
 from werkzeug.utils import secure_filename
 from src.helpers.decorators import check_login, check_admin
-from src.helpers.utils import slugify
+from src.helpers.utils import slugify, get_iqr_range
 from flask_login import current_user
+from src.procedures.models import Procedures
+from src.parameters.models import Parameters
 
 
 site = Blueprint('site', __name__, url_prefix='')
@@ -107,5 +109,16 @@ def collect_data(schedule_id):
 @check_login
 def procedure_data(procedure_id):
     experiments = SiteModels.Experiments.get_by_procedure(procedure_id)
-    procedure = SiteModels.Procedures.query.get(procedure_id)
+    procedure = Procedures.query.get(procedure_id)
     return render_template("/site/procedure_data.html", experiments=experiments, procedure=procedure)
+
+
+@site.route('/outliers/<int:parameter_id>/', methods=['GET'])
+@check_login
+def outliers(parameter_id):
+    parameter = Parameters.query.get(parameter_id)
+    data_points = []
+    for point in parameter.data_points:
+        data_points.append(float(point.get_value().value))
+    data = get_iqr_range(data_points)
+    return render_template("/site/outliers.html", data=data, parameter=parameter)

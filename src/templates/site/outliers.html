@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}{{ parameter.name }} Outliers{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.1.2/css/highcharts.min.css" integrity="sha512-6H4CAFO0Xop3NNAfLog/teJ+kV8xFv4Hid1P+/kRqh363117pHHgTxkvwQRPpyKyvckHKpJwpD76GNjMGTT2gQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+     <div class="column">
+      <div id="container" style="width:100%; height:600px;"></div>
+     </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.1.2/highcharts.js" integrity="sha512-prZV5wNX5I3fC7LuHbGSVaZdkGSaGozWsk6GjjDqulbi3kcummKxIiR7O5lFh2ec/M0AxlHC8zokmLco+SfD/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.1.2/highcharts-more.min.js" integrity="sha512-MO884SHO4pAr1sYtL/n2E1ZvsWTrAF80L0wf8UiUduo1hi7e9glE+3AHUkNrp6zrRdBcn4ExayxNoKgD3fz3pA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+	$(document).ready( function () {
+        Highcharts.chart('container', {
+
+		    chart: {
+		        type: 'boxplot'
+		    },
+
+		    title: {
+		        text: 'Outliers for {{ parameter.name }}'
+		    },
+
+		    legend: {
+		        enabled: false
+		    },
+
+		    xAxis: {
+		        categories: ['1', '2'],
+		        title: {
+		            text: 'Column 1 represents the IQR Range and outliers. Column 2 represents the Z score outliers.'
+		        }
+		    },
+
+		    yAxis: {
+		        title: {
+		            text: '{{ parameter.name|uc_words }}'
+		        },
+		        plotLines: [{
+		            value: {{ data.mean|round(2) }},
+		            color: 'red',
+		            width: 1,
+		            label: {
+		                text: 'Mean: {{ data.mean }}',
+		                align: 'center',
+		                style: {
+		                    color: 'gray'
+		                }
+		            }
+		        }]
+		    },
+
+		    series: [{
+		        name: 'IQR Range',
+		        data: [
+		            [{{ data.lower_bound|round(2) }}, {{ data.q1|round(2) }}, {{ data.median|round(2) }}, {{ data.q3|round(2) }}, {{ data.upper_bound|round(2) }}],
+		        ],
+		    }, {
+		        name: 'Outliers',
+		        color: Highcharts.getOptions().colors[0],
+		        type: 'scatter',
+		        data: [ // x, y positions where 0 is the first category
+		        	{% for outlier in data.iqr_outliers %}
+		            	[0, {{ outlier }}],
+		        	{% endfor %}
+		        	{% for outlier in data.z_score_outliers %}
+		            	[1, {{ outlier }}],
+		        	{% endfor %}
+		        ],
+		        marker: {
+		            fillColor: 'white',
+		            lineWidth: 1,
+		            lineColor: Highcharts.getOptions().colors[0]
+		        },
+		        tooltip: {
+		            pointFormat: 'Observation: {point.y}'
+		        }
+		    }]
+
+		});
+    });
+</script>
+{% endblock %}

@@ -44,20 +44,12 @@ project.description = 'The Knockout Mouse Phenotyping Program (KOMP2) collaborat
 db.session.add(project)
 db.session.commit()
 
-specimen = SpecimensModels.Specimens()
-specimen.name = 'EXMPL-1'
-db.session.add(specimen)
-db.session.commit()
 
-specimen = SpecimensModels.Specimens()
-specimen.name = 'EXMPL-2'
-db.session.add(specimen)
-db.session.commit()
-
-specimen = SpecimensModels.Specimens()
-specimen.name = 'EXMPL-3'
-db.session.add(specimen)
-db.session.commit()
+for i in range(1,100):
+	specimen = SpecimensModels.Specimens()
+	specimen.name = 'EXMPL-' + str(i)
+	db.session.add(specimen)
+	db.session.commit()
 
 specimen_attribute = SpecimensModels.SpecimensAttribute()
 specimen_attribute.name = 'sex'
@@ -79,206 +71,422 @@ specimen_attribute.name = 'date of death'
 db.session.add(specimen_attribute)
 db.session.commit()
 
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 1
-specimen_value.specimens_attribute_id = 1
-specimen_value.value = 'Male'
-db.session.add(specimen_value)
-db.session.commit()
+for i in range(1,100):
+	specimen_value = SpecimensModels.SpecimensValue()
+	specimen_value.specimens_id = i
+	specimen_value.specimens_attribute_id = 1
+	specimen_value.value = 'Male' if i%2 == 1 else 'Female'
+	db.session.add(specimen_value)
+	db.session.commit()
 
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 1
-specimen_value.specimens_attribute_id = 2
-specimen_value.value = 'Het'
-db.session.add(specimen_value)
-db.session.commit()
+for i in range(1,100):
+	specimen_value = SpecimensModels.SpecimensValue()
+	specimen_value.specimens_id = i
+	specimen_value.specimens_attribute_id = 2
+	specimen_value.value = 'Het' if i%3 == 1 else 'Hom'
+	db.session.add(specimen_value)
+	db.session.commit()
 
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 1
-specimen_value.specimens_attribute_id = 3
-specimen_value.value = str((date.today() - timedelta(days=12)).strftime("%Y-%m-%d")) + 'T12:00'
-db.session.add(specimen_value)
-db.session.commit()
-
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 2
-specimen_value.specimens_attribute_id = 1
-specimen_value.value = 'Female'
-db.session.add(specimen_value)
-db.session.commit()
-
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 2
-specimen_value.specimens_attribute_id = 2
-specimen_value.value = 'Het'
-db.session.add(specimen_value)
-db.session.commit()
-
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 2
-specimen_value.specimens_attribute_id = 3
-specimen_value.value = str((date.today() - timedelta(days=9)).strftime("%Y-%m-%d")) + 'T12:00'
-db.session.add(specimen_value)
-db.session.commit()
-
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 3
-specimen_value.specimens_attribute_id = 2
-specimen_value.value = 'Hom'
-db.session.add(specimen_value)
-db.session.commit()
-
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 3
-specimen_value.specimens_attribute_id = 1
-specimen_value.value = 'Male'
-db.session.add(specimen_value)
-db.session.commit()
-
-specimen_value = SpecimensModels.SpecimensValue()
-specimen_value.specimens_id = 3
-specimen_value.specimens_attribute_id = 3
-specimen_value.value = str((date.today() - timedelta(days=10)).strftime("%Y-%m-%d")) + 'T12:00'
-db.session.add(specimen_value)
-db.session.commit()
+for i in range(1,100):
+	specimen_value = SpecimensModels.SpecimensValue()
+	specimen_value.specimens_id = i
+	specimen_value.specimens_attribute_id = 3
+	specimen_value.value = str((date.today() - timedelta(days=i)).strftime("%Y-%m-%d")) + 'T12:00'
+	db.session.add(specimen_value)
+	db.session.commit()
 
 procedure = ProceduresModels.Procedures()
 procedure.project_id = 1
-procedure.name = 'Body Weight'
-procedure.description = 'The body weight test measures the weight of the mouse in a time series, allowing monitoring of its evolution; also, it is parameter.required in many other procedures.'
-db.session.add(procedure)
-db.session.commit()
-
-procedure = ProceduresModels.Procedures()
-procedure.project_id = 1
-procedure.name = 'Fertility'
-procedure.description = 'To assess the fertility of homozygous knockout mice.'
-db.session.add(procedure)
-db.session.commit()
-
-procedure = ProceduresModels.Procedures()
-procedure.project_id = 1
-procedure.name = 'Open Field'
-procedure.description = 'The Open Field test is used to assess anxiety and exploratory behaviors. It is based on the natural tendency of an animal to explore and to protect itself using avoidance which translates to a normal animal spending more time in the periphery of the Open Field arena than in the center (the most anxiogenic area).'
+procedure.name = 'Clinical Chemistry'
+procedure.description = 'Clinical chemistry determines biochemical parameters in plasma including enzymatic activity, specific substrates and electrolytes.'
 db.session.add(procedure)
 db.session.commit()
 
 parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
-parameter.name = 'Body Weight'
+parameter.name = 'Sodium'
 parameter.datatype = 'decimal' 
-parameter.datamin = str(2.5)
-parameter.datamax = str(90.0)
-parameter.required = 1
-db.session.add(parameter)
-db.session.commit()
-
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 2
-parameter.name = 'Gross Findings Male'
-parameter.datatype = 'option'
-parameter.required = 1
-db.session.add(parameter)
-db.session.flush()
-
-option = SiteModels.Options.get_by_name('Infertile')
-if not option:
-    option = SiteModels.Options()
-option.name = 'Infertile'
-db.session.add(option)
-db.session.flush()
-parameter.options.append(option)
-db.session.add(parameter)
-db.session.flush()
-
-option = SiteModels.Options.get_by_name('Fertile')
-if not option:
-    option = SiteModels.Options()
-option.name = 'Fertile'
-db.session.add(option)
-db.session.flush()
-parameter.options.append(option)
-db.session.add(parameter)
-db.session.commit()
-
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 2
-parameter.name = 'Gross Findings Female'
-parameter.datatype = 'option'
-parameter.required = 1
-db.session.add(parameter)
-db.session.flush()
-
-option = SiteModels.Options.get_by_name('Infertile')
-if not option:
-    option = SiteModels.Options()
-option.name = 'Infertile'
-db.session.add(option)
-db.session.flush()
-parameter.options.append(option)
-db.session.add(parameter)
-db.session.flush()
-
-option = SiteModels.Options.get_by_name('Fertile')
-if not option:
-    option = SiteModels.Options()
-option.name = 'Fertile'
-db.session.add(option)
-db.session.flush()
-parameter.options.append(option)
-db.session.add(parameter)
-db.session.commit()
-
-
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 3
-parameter.name = 'increment'
-parameter.datatype = 'integer' 
-parameter.datamin = str(5)
-parameter.datamax = str(20)
-parameter.required = 1
-db.session.add(parameter)
-db.session.commit()
-
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 3
-parameter.name = 'Distance Travelled'
-parameter.datatype = 'decimal' 
-parameter.datamin = str(5.0)
-parameter.datamax = str(25.75)
-parameter.required = 1
-db.session.add(parameter)
-db.session.commit()
-
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 3
-parameter.name = 'Number of Rears'
-parameter.datatype = 'integer' 
 parameter.datamin = str(0)
-parameter.datamax = str(2000)
-parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
 
 parameter = ParametersModels.Parameters()
-parameter.procedure_id = 3
-parameter.name = 'Whole Arena Resting Time'
+parameter.procedure_id = 1
+parameter.name = 'Potassium'
 parameter.datatype = 'decimal' 
-parameter.datamin = str(0.0)
-parameter.datamax = str(600.0)
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Chloride'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Urea (Blood Urea Nitrogen - BUN)'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
 
 parameter = ParametersModels.Parameters()
-parameter.procedure_id = 3
-parameter.name = 'Number of Center Entries'
-parameter.datatype = 'integer' 
+parameter.procedure_id = 1
+parameter.name = 'Creatinine'
+parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
-parameter.datamax = str(1000)
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Total Protein'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Albumin'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Total Bilirubin'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Calcium'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Phosphorus'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Iron'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Aspartate Aminotransferase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Alanine Aminotransferase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Alkaline Phosphatase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Total Cholesterol'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'HDL-cholesterol'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Triglycerides'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Glucose'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'LIH (Hemolysis Severity - available on AU analysers)'
+parameter.datatype = 'text' 
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Fructosamine'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Lipase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Lactate dehydrogenase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Alpha-amylase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'UIBC (unsaturated iron binding capacity)'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'LDL-cholesterol'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Free fatty acids'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Glycerol'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Creatine kinase'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Uric acid'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Ferritin'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Transferrin'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'C-reactive protein'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Glycosilated hemoglobin A1c (HbA1c)'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Thyroxine'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Magnesium'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Cholesterol ratio'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Anesthesia used for blood collection'
+parameter.datatype = 'option' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.flush()
+
+options_list = ['Gas anaesthesia with Isofluorane',
+'Injection narcosis with Ketamine (100mg/kg)/Xylazine (10mg/kg)',
+'Injection narcosis with Ketamine (100mg/kg)/ Xylazine (10mg/kg )/Antipamezole (Antisedan, 1mg/kg)',
+'Injection narcosis with Ketamine (110mg/kg)/Xylazine (11mg/kg)',
+'Injection narcosis with Ketamine (110mg/kg)/Xylazine (11mg/kg)/ Antipamezole (Antisedan, 1mg/kg)',
+'Injection narcosis with Tribromoethanol (Avertin)',
+'Injection narcosis with Sodium Pentobarbital (Pentobarb, 0.1ml)',
+'Injection narcosis with Sodium Pentobarbital (Euthatal)',
+'No',
+'Injection narcosis with Ketamine (137mg/kg)/Xylazine (6.6mg/kg)',
+'Injection narcosis with Sodium Pentobarbital (Somnopentyl)']
+
+for opt in options_list:
+	option = SiteModels.Options.get_by_name(opt)
+	if not option:
+	    option = SiteModels.Options()
+	option.name = opt
+	db.session.add(option)
+	db.session.flush()
+	parameter.options.append(option)
+	db.session.add(parameter)
+	db.session.flush()
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Method of blood collection'
+parameter.datatype = 'option' 
+parameter.datamin = str(0)
+parameter.required = 1
+db.session.add(parameter)
+db.session.flush()
+
+options_list = ['Cardiac puncture',
+'Retro-orbital puncture',
+'Heart puncture',
+'Jugular vein',
+'Tail vein']
+
+for opt in options_list:
+	option = SiteModels.Options.get_by_name(opt)
+	if not option:
+	    option = SiteModels.Options()
+	option.name = opt
+	db.session.add(option)
+	db.session.flush()
+	parameter.options.append(option)
+	db.session.add(parameter)
+	db.session.flush()
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Storage temperature from blood collection till measurement'
+parameter.datatype = 'decimal' 
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Anticoagulant'
+parameter.datatype = 'character' 
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 1
+parameter.name = 'Date and time of blood collection'
+parameter.datatype = 'datetime' 
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
 
 schedule = SchedulesModels.Schedules()
 schedule.start_datetime = str(date.today().strftime("%Y-%m-%d")) + 'T12:00'
@@ -291,25 +499,4 @@ schedule.specimens.append(SpecimensModels.Specimens.query.get(3))
 db.session.add(schedule)
 db.session.commit()
 
-schedule = SchedulesModels.Schedules()
-schedule.start_datetime = str((date.today() + timedelta(days=1)).strftime("%Y-%m-%d")) + 'T12:00'
-schedule.end_datetime = str((date.today() + timedelta(days=1)).strftime("%Y-%m-%d")) + 'T14:00'
-schedule.procedure_id = 2
-schedule.users.append(User.query.get(1))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(1))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(2))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(3))
-db.session.add(schedule)
-db.session.commit()
-
-schedule = SchedulesModels.Schedules()
-schedule.start_datetime = str((date.today() + timedelta(days=2)).strftime("%Y-%m-%d")) + 'T12:00'
-schedule.end_datetime = str((date.today() + timedelta(days=2)).strftime("%Y-%m-%d")) + 'T14:00'
-schedule.procedure_id = 3
-schedule.users.append(User.query.get(1))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(1))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(2))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(3))
-db.session.add(schedule)
-db.session.commit()
 
