@@ -2,7 +2,7 @@
 import os
 from flask import (
     Blueprint, request, render_template,
-    redirect, url_for)
+    redirect, url_for, jsonify)
 from src import db
 import src.specimens.models as SpecimensModels
 import src.specimens.forms as SpecimensForms
@@ -18,6 +18,15 @@ specimens = Blueprint('specimens', __name__, url_prefix='/specimens')
 def index():
     specimens = SpecimensModels.Specimens.query.all()
     attributes = SpecimensModels.SpecimensAttribute.query.all()
+    if request.args.get('ajax'):
+        data = []
+        for specimen in specimens:
+            data_set = []
+            data_set.append(render_template('/specimens/specimen_link.html', specimen=specimen))
+            for attribute in attributes:
+                data_set.append(specimen.attributes.get(attribute.name))
+            data.append(data_set)
+        return jsonify({'data': data})
     return render_template("/specimens/index.html", specimens=specimens, attributes=attributes)
 
 

@@ -27,3 +27,16 @@ OpenLIMS is not quite ready for production use, however, if you would like to ru
 For serving this application, Gunicorn is my favorite tool, but feel free to use whatever you'd like.
 
 Again, if you need any help using this, please message me!
+
+
+## TODO
+
+work with larger data sets:
+- create more fake test data
+- test load times, and create new ways to get data faster
+- make sure views work with data sets of all sizes
+
+consitant views
+- tables should look the same even if not using datatables plugin
+- admin views need rework
+

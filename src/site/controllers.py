@@ -2,7 +2,7 @@
 import os
 from flask import (
     Blueprint, request, render_template,
-    redirect, url_for)
+    redirect, url_for, jsonify)
 from src import db, app
 import src.site.models as SiteModels
 import src.site.forms as SiteForms
@@ -41,6 +41,18 @@ def dashboard():
 def experiments():
     experiments = SiteModels.Experiments.query.all()
     attributes = SiteModels.ExperimentsAttribute.query.all()
+    if request.args.get('ajax'):
+        data = []
+        for experiment in experiments:
+            data_set = [experiment.get_datetime().strftime('%m/%d/%Y %H:%M'),
+                experiment.get_project().name,
+                experiment.get_procedure().name,
+                experiment.get_specimen().name]
+            for attribute in attributes:
+                data_set.append(experiment.attributes.get(attribute.name).value)
+            data_set.append(render_template('/site/experiments/view_data.html', experiment_id=experiment.id))
+            data.append(data_set)
+        return jsonify({'data': data})
     return render_template("/site/experiments/index.html", experiments=experiments, attributes=attributes)
 
 
@@ -110,6 +122,14 @@ def collect_data(schedule_id):
 def procedure_data(procedure_id):
     experiments = SiteModels.Experiments.get_by_procedure(procedure_id)
     procedure = Procedures.query.get(procedure_id)
+    if request.args.get('ajax'):
+        data = []
+        for experiment in experiments:
+            data_set = [experiment.get_specimen().name]
+            for data_point in experiment.data_points:
+                data_set.append(str(data_point.get_value()))
+            data.append(data_set)
+        return jsonify({'data': data})
     return render_template("/site/procedure_data.html", experiments=experiments, procedure=procedure)
 
 
@@ -119,6 +139,6 @@ def outliers(parameter_id):
     parameter = Parameters.query.get(parameter_id)
     data_points = []
     for point in parameter.data_points:
-        data_points.append(float(point.get_value().value))
+        data_points.append(float(point.get_value()))
     data = get_iqr_range(data_points)
     return render_template("/site/outliers.html", data=data, parameter=parameter)

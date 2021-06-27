@@ -44,7 +44,7 @@ def get_iqr_range(data_set):
     mean = numpy.mean(data_set)
     q1, q3 = numpy.percentile(data_set,[25,75])
     iqr = q3 - q1
-    lower_bound = q1 - (1.5 * iqr) 
+    lower_bound = q1 - (1.5 * iqr)
     upper_bound = q3 + (1.5 * iqr)
 
     return {'lower_bound': lower_bound, 'q1': q1, 'mean': mean, 'median': median, 'q3': q3,

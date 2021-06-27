@@ -112,7 +112,7 @@ class DataPoints(db.Model):
   def get_value(self):
     data_type = self.get_parameter().get_datatype()
     classInstance = self.get_class_by_string(data_type)
-    return classInstance.query.get(self.data_point_id)
+    return classInstance.get_value(self.data_point_id)
 
   def get_class_by_string(self, data_type):
     lookup = {'Integer': DataIntegers(),
@@ -143,6 +143,10 @@ class DataIntegers(db.Model):
     return str(self.value)
 
   @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
+
+  @classmethod
   def get_by_value(cls, value):
     return cls.query.filter_by(value=value).first()
 
@@ -153,6 +157,10 @@ class DataCharacters(db.Model):
 
   def __repr__(self):
     return str(self.value)
+
+  @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
 
   @classmethod
   def get_by_value(cls, value):
@@ -167,6 +175,10 @@ class DataBooleans(db.Model):
     return str(self.value)
 
   @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
+
+  @classmethod
   def get_by_value(cls, value):
     return cls.query.filter_by(value=value).first()
 
@@ -177,6 +189,10 @@ class DataDecimals(db.Model):
 
   def __repr__(self):
     return str(self.value)
+
+  @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
 
   @classmethod
   def get_by_value(cls, value):
@@ -191,6 +207,10 @@ class DataDatetimes(db.Model):
     return str(self.value)
 
   @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
+
+  @classmethod
   def get_by_value(cls, value):
     return cls.query.filter_by(value=value).first()
 
@@ -201,6 +221,10 @@ class DataDates(db.Model):
 
   def __repr__(self):
     return str(self.value)
+
+  @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
 
   @classmethod
   def get_by_value(cls, value):
@@ -215,6 +239,10 @@ class DataTimes(db.Model):
     return str(self.value)
 
   @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
+
+  @classmethod
   def get_by_value(cls, value):
     return cls.query.filter_by(value=value).first()
 
@@ -225,6 +253,10 @@ class DataTexts(db.Model):
 
   def __repr__(self):
     return str(self.value)
+
+  @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
 
   @classmethod
   def get_by_value(cls, value):
@@ -239,6 +271,10 @@ class DataFiles(db.Model):
     return str(self.value)
 
   @classmethod
+  def get_value(cls, data_point_id):
+    return cls.query.get(data_point_id).value
+
+  @classmethod
   def get_by_value(cls, value):
     return cls.query.filter_by(value=value).first()
 
@@ -249,6 +285,11 @@ class DataOptions(db.Model):
 
   def __repr__(self):
     return Options.query.get(self.option_id).name
+
+  @classmethod
+  def get_value(cls, data_point_id):
+    option_id = cls.query.get(data_point_id).option_id
+    return Options.query.get(option_id).name
 
   @classmethod
   def get_by_value(cls, value):

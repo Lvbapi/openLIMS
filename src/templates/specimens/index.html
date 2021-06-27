@@ -18,17 +18,17 @@
 	      	{% endfor %}
 	      </tr>
 	  </thead>
-	  <tbody>
-	      {% for specimen in specimens %}
-	      <tr>
-	      	<td><a href="{{ url_for('specimens.view', specimen_id=specimen.id) }}">{{ specimen.name }}</a></td>
-	      	{% for attribute in attributes %}
-	      		<td>{{specimen.attributes.get(attribute.name)}}</td>
-	      	{% endfor %}
-	      </tr>
-	      {% endfor %}
-	  </tbody>
 	  </table>
      </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+	$(document).ready(function(){
+	  $('table.striped.table').DataTable( {
+          "ajax": "{{ url_for('specimens.index', ajax=1) }}"
+      });
+	})
+</script>
 {% endblock %}

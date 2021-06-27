@@ -10,11 +10,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
       
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.semanticui.min.css" />
     <style>
       .secondary.pointing.menu .toc.item {display: none;}
       .ui.grid{
 	    margin: 30px 0;
        }
+      .row.dt-table{
+        overflow: auto;
+      }
+      table.dataTable.table td.dataTables_empty, table.dataTable.table th.dataTables_empty{
+        text-align: left;
+      }
       @media only screen and (max-width: 700px) {
           .secondary.pointing.menu .item, .secondary.pointing.menu .right.item {display: none;}
           .secondary.pointing.menu .toc.item {display: block;}
@@ -48,6 +55,9 @@
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.js"></script>
+
+    <script src='https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js'></script>
+    <script src='https://cdn.datatables.net/1.10.25/js/dataTables.semanticui.min.js'></script>
     <script>
       $(document).ready(function() {
         // create sidebar and attach to menu open
@@ -58,10 +68,12 @@
         $('.ui.dropdown').dropdown();
         $('.ui.accordion').accordion();
 
-        $(document).on('change', 'input[type=datetime-local]', function(){
-            this.value = this.value.substr(0, 16);
-        })
       });
+
+      $(document).on('change', 'input[type=datetime-local]', function(){
+          this.value = this.value.substr(0, 16);
+      });
+
     </script>
     {% block script %}{% endblock %}
 </body>

@@ -10,7 +10,9 @@ import src.auth.models as AuthModels
 import src.projects.models as ProjectsModels
 from werkzeug.security import generate_password_hash
 from datetime import date, timedelta
+import random
 
+fakes = 200
 
 user = User()
 user.email = 'admin@example.com'
@@ -45,7 +47,7 @@ db.session.add(project)
 db.session.commit()
 
 
-for i in range(1,100):
+for i in range(1,fakes):
 	specimen = SpecimensModels.Specimens()
 	specimen.name = 'EXMPL-' + str(i)
 	db.session.add(specimen)
@@ -71,7 +73,7 @@ specimen_attribute.name = 'date of death'
 db.session.add(specimen_attribute)
 db.session.commit()
 
-for i in range(1,100):
+for i in range(1,fakes):
 	specimen_value = SpecimensModels.SpecimensValue()
 	specimen_value.specimens_id = i
 	specimen_value.specimens_attribute_id = 1
@@ -79,7 +81,7 @@ for i in range(1,100):
 	db.session.add(specimen_value)
 	db.session.commit()
 
-for i in range(1,100):
+for i in range(1,fakes):
 	specimen_value = SpecimensModels.SpecimensValue()
 	specimen_value.specimens_id = i
 	specimen_value.specimens_attribute_id = 2
@@ -87,7 +89,7 @@ for i in range(1,100):
 	db.session.add(specimen_value)
 	db.session.commit()
 
-for i in range(1,100):
+for i in range(1,fakes):
 	specimen_value = SpecimensModels.SpecimensValue()
 	specimen_value.specimens_id = i
 	specimen_value.specimens_attribute_id = 3
@@ -489,14 +491,94 @@ db.session.commit()
 
 
 schedule = SchedulesModels.Schedules()
-schedule.start_datetime = str(date.today().strftime("%Y-%m-%d")) + 'T12:00'
-schedule.end_datetime = str(date.today().strftime("%Y-%m-%d")) + 'T14:00'
+schedule.start_datetime = str((date.today() - timedelta(days=1)).strftime("%Y-%m-%d")) + 'T12:00'
+schedule.end_datetime = str((date.today() - timedelta(days=1)).strftime("%Y-%m-%d")) + 'T14:00'
 schedule.procedure_id = 1
 schedule.users.append(User.query.get(1))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(1))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(2))
-schedule.specimens.append(SpecimensModels.Specimens.query.get(3))
+for i in range(1,int(fakes/2)):
+	schedule.specimens.append(SpecimensModels.Specimens.query.get(i))
 db.session.add(schedule)
+db.session.flush()
+
+
+for specimen in schedule.specimens:
+    experiment = SiteModels.Experiments()
+    experiment.schedule_id = schedule.id
+    experiment.specimen_id = specimen.id
+    experiment.project_id = schedule.get_project_id()
+    experiment.procedure_id = schedule.procedure_id
+    db.session.add(experiment)
+    db.session.flush()
+    for parameter in schedule.get_procedure().parameters:
+        datapoint = SiteModels.DataPoints()
+        data_type = parameter.get_datatype()
+    
+        data_value = round(random.uniform(0.1, 300.0) + (random.choice([1,2,3]) * random.uniform(1,2)), 2)
+        classInstance = datapoint.get_by_value(data_type, data_value)
+        
+        if not classInstance:
+            classInstance = datapoint.get_class_by_string(data_type)
+
+            if data_type == 'Option':
+                classInstance.option_id = parameter.options[random.choice([1, 2, 3])].id
+            elif data_type == 'Datetime':
+            	classInstance.value = date.today()
+            else:
+                classInstance.value = data_value
+
+            db.session.add(classInstance)
+            db.session.flush()
+        datapoint.experiment_id = experiment.id
+        datapoint.parameter_id = parameter.id
+        datapoint.data_point_id = classInstance.id
+        db.session.add(datapoint)
+        db.session.flush()
 db.session.commit()
 
+
+
+schedule = SchedulesModels.Schedules()
+schedule.start_datetime = str((date.today() - timedelta(days=2)).strftime("%Y-%m-%d")) + 'T12:00'
+schedule.end_datetime = str((date.today() - timedelta(days=2)).strftime("%Y-%m-%d")) + 'T14:00'
+schedule.procedure_id = 1
+schedule.users.append(User.query.get(1))
+for i in range(int(fakes/2), fakes):
+	schedule.specimens.append(SpecimensModels.Specimens.query.get(i))
+db.session.add(schedule)
+db.session.flush()
+
+
+for specimen in schedule.specimens:
+    experiment = SiteModels.Experiments()
+    experiment.schedule_id = schedule.id
+    experiment.specimen_id = specimen.id
+    experiment.project_id = schedule.get_project_id()
+    experiment.procedure_id = schedule.procedure_id
+    db.session.add(experiment)
+    db.session.flush()
+    for parameter in schedule.get_procedure().parameters:
+        datapoint = SiteModels.DataPoints()
+        data_type = parameter.get_datatype()
+    
+        data_value = round(random.uniform(150.5, 165.5) + (random.choice([1,2,3]) * random.uniform(1,2)), 2)
+        classInstance = datapoint.get_by_value(data_type, data_value)
+        
+        if not classInstance:
+            classInstance = datapoint.get_class_by_string(data_type)
+
+            if data_type == 'Option':
+                classInstance.option_id = parameter.options[random.choice([1, 2])].id
+            elif data_type == 'Datetime':
+            	classInstance.value = date.today()
+            else:
+                classInstance.value = data_value
+
+            db.session.add(classInstance)
+            db.session.flush()
+        datapoint.experiment_id = experiment.id
+        datapoint.parameter_id = parameter.id
+        datapoint.data_point_id = classInstance.id
+        db.session.add(datapoint)
+        db.session.flush()
+db.session.commit()
 
