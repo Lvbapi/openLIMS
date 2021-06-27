@@ -23,9 +23,7 @@
     
     {% if schedule.specimens|length > 0 %}
       <h3>Specimens</h3>
-      {% for specimen in schedule.specimens %}
-        <p>{{ specimen }}</p>
-      {% endfor %}
+      <p>{{ schedule.specimens }}</p>
     {% else %}
       <h2>No Specimens Selected</h2>
     {% endif %}
@@ -41,17 +39,40 @@
       <a class="ui green button" href="{{ url_for('site.collect_data', schedule_id=schedule.id) }}">Collect Data</a>
     {% else %}
       <h3>Specimen Data</h3>
-      {% for experiment in schedule.experiments %}
-        <a class='ui blue vertical animated button' href="{{ url_for('site.experiments_view', experiment_id=experiment.id ) }}">
-          <div class="hidden content">View</div>
-          <div class="visible content">
-            {{ experiment.get_specimen() }}
-          </div>
-        </a>
-      {% endfor %}
+      <table class="ui striped table">
+        {% for experiment in schedule.experiments %}
+          {% if loop.first %}
+            <thead>
+              <tr>
+                {% for parameter in experiment.get_procedure().parameters %}
+                  <th>{{ parameter.name|uc_words }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+          {% endif %}
+          <tr>
+            {% for datapoint in experiment.data_points %}
+              <td>{{ datapoint.get_value() }}</td>
+            {% endfor %}
+          </tr>
+          {% if loop.last %}
+            </tbody>
+          {% endif %}
+        {% endfor %}
+      </table>
     {% endif %}
   </div>
 </div>
 
 {% endblock %}
 
+{% block script %}
+{% if schedule.experiments|length > 0 %}
+<script>
+  $(document).ready(function(){
+    $('table.striped.table').DataTable();
+  })
+</script>
+{% endif %}
+{% endblock %}

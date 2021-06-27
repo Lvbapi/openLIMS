@@ -192,7 +192,7 @@ class DataDecimals(db.Model):
 
   @classmethod
   def get_value(cls, data_point_id):
-    return cls.query.get(data_point_id).value
+    return round(cls.query.get(data_point_id).value, 2)
 
   @classmethod
   def get_by_value(cls, value):

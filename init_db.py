@@ -12,7 +12,7 @@ from werkzeug.security import generate_password_hash
 from datetime import date, timedelta
 import random
 
-fakes = 200
+fakes = 20
 
 user = User()
 user.email = 'admin@example.com'
