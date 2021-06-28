@@ -24,15 +24,11 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 # Create the user routes
-@admin.route('/user', defaults={'pages': 1}, methods=['GET'])
-@admin.route('/user/<int:pages>', methods=['GET'])
+@admin.route('/user', methods=['GET'])
 @check_login
 @check_admin
-def user_list(pages):
-    order = 'users_' + request.args[
-        'sort'] if 'sort' in request.args else 'users_id'
-    direction = request.args['d'] if 'd' in request.args else 'desc'
-    users = User.get_sortable_list(order, direction, pages)
+def user_list():
+    users = User.all()
 
     return render_template("admin/users/list.html", users=users)
 
@@ -90,15 +86,11 @@ def delete_user(user_id):
 
 
 # Create the role routes
-@admin.route('/role', defaults={'pages': 1}, methods=['GET'])
-@admin.route('/role/<int:pages>', methods=['GET'])
+@admin.route('/role', methods=['GET'])
 @check_login
 @check_admin
-def role_list(pages):
-    order = request.args['sort'] if 'sort' in request.args else 'id'
-    direction = request.args['d'] if 'd' in request.args else 'desc'
-    roles = Role.get_sortable_list(order, direction, pages)
-
+def role_list():
+    roles = Role.all()
     return render_template("admin/roles/list.html", roles=roles)
 
 
