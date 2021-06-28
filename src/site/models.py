@@ -137,7 +137,7 @@ class DataPoints(db.Model):
 
 class DataIntegers(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Integer)
+  value = db.Column(db.Integer, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -153,7 +153,7 @@ class DataIntegers(db.Model):
 
 class DataCharacters(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.String)
+  value = db.Column(db.String, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -169,7 +169,7 @@ class DataCharacters(db.Model):
 
 class DataBooleans(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Boolean)
+  value = db.Column(db.Boolean, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -185,7 +185,7 @@ class DataBooleans(db.Model):
 
 class DataDecimals(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Numeric)
+  value = db.Column(db.Float, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -201,7 +201,7 @@ class DataDecimals(db.Model):
 
 class DataDatetimes(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.DateTime)
+  value = db.Column(db.DateTime, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -217,7 +217,7 @@ class DataDatetimes(db.Model):
 
 class DataDates(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Date)
+  value = db.Column(db.Date, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -233,7 +233,7 @@ class DataDates(db.Model):
 
 class DataTimes(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Time)
+  value = db.Column(db.Time, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -249,7 +249,7 @@ class DataTimes(db.Model):
 
 class DataTexts(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Text)
+  value = db.Column(db.Text, unique=True)
 
   def __repr__(self):
     return str(self.value)
@@ -265,7 +265,7 @@ class DataTexts(db.Model):
 
 class DataFiles(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  value = db.Column(db.Text)
+  value = db.Column(db.String, unique=True)
 
   def __repr__(self):
     return str(self.value)
