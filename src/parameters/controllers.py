@@ -41,6 +41,7 @@ def add():
         parameter.datatype = request.form.get('datatype')
         parameter.datamin = request.form.get('datamin')
         parameter.datamax = request.form.get('datamax')
+        parameter.unit = request.form.get('unit')
         parameter.required = 1 if request.form.get('required') == 'y' else 0
         db.session.add(parameter)
         db.session.flush()
@@ -82,6 +83,7 @@ def edit(parameter_id):
         parameter.datatype = request.form.get('datatype')
         parameter.datamin = request.form.get('datamin')
         parameter.datamax = request.form.get('datamax')
+        parameter.unit = request.form.get('unit')
         parameter.required = 1 if request.form.get('required') == 'y' else 0
         db.session.add(parameter)
         db.session.flush()

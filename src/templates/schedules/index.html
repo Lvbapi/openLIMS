@@ -14,6 +14,7 @@
 	      	<th>View</th>
 	      	<th>Start</th>
 	      	<th>End</th>
+	      	<th>Complete</th>
 	      	<th>Procedure</th>
 	      	<th>Asigneed To</th>
 	      	<th>Specimens</th>
@@ -28,6 +29,7 @@
 	      	<td nowrap><a href="{{ url_for('schedules.view', schedule_id=schedule.id) }}">View</a></td>
 	      	<td>{{ schedule.start_datetime }}</td>
 	      	<td>{{ schedule.end_datetime }}</td>
+	      	<td>{% if schedule.experiments|length > 0 %}<i class="ui icon check"></i>{% endif %}</td>
 	      	<td>{{ schedule.get_procedure() }}</td>
 	      	<td>{{ schedule.users }}</td>
 	      	<td>{{ schedule.specimens }}</td>

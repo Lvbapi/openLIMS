@@ -10,6 +10,7 @@
 	    <p>Data Type: {{ parameter.get_datatype() }}</p>
 	    <p>Data Min: {{ parameter.datamin }}</p>
 	    <p>Data Max: {{ parameter.datamax }}</p>
+	    <p>Unit: {{ parameter.unit }}</p>
 	    <p>Required: {{ parameter.required }}</p>
 
 	    {% if parameter.get_datatype() == 'Option' %}

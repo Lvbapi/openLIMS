@@ -109,6 +109,7 @@ parameter.procedure_id = 1
 parameter.name = 'Sodium'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mmol/l'
 db.session.add(parameter)
 db.session.commit()
 
@@ -117,6 +118,7 @@ parameter.procedure_id = 1
 parameter.name = 'Potassium'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mmol/l'
 db.session.add(parameter)
 db.session.commit()
 
@@ -125,6 +127,7 @@ parameter.procedure_id = 1
 parameter.name = 'Chloride'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mmol/l'
 db.session.add(parameter)
 db.session.commit()
 
@@ -133,6 +136,7 @@ parameter.procedure_id = 1
 parameter.name = 'Urea (Blood Urea Nitrogen - BUN)'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -142,6 +146,7 @@ parameter.procedure_id = 1
 parameter.name = 'Creatinine'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -151,6 +156,7 @@ parameter.procedure_id = 1
 parameter.name = 'Total Protein'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'g/l'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -160,6 +166,7 @@ parameter.procedure_id = 1
 parameter.name = 'Albumin'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'g/l'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -169,6 +176,7 @@ parameter.procedure_id = 1
 parameter.name = 'Total Bilirubin'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -178,6 +186,7 @@ parameter.procedure_id = 1
 parameter.name = 'Calcium'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -187,6 +196,7 @@ parameter.procedure_id = 1
 parameter.name = 'Phosphorus'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -196,6 +206,7 @@ parameter.procedure_id = 1
 parameter.name = 'Iron'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 db.session.add(parameter)
 db.session.commit()
 
@@ -204,6 +215,7 @@ parameter.procedure_id = 1
 parameter.name = 'Aspartate Aminotransferase'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'U/l'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -213,6 +225,7 @@ parameter.procedure_id = 1
 parameter.name = 'Alanine Aminotransferase'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'U/l'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -222,6 +235,7 @@ parameter.procedure_id = 1
 parameter.name = 'Alkaline Phosphatase'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'U/l'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -231,6 +245,7 @@ parameter.procedure_id = 1
 parameter.name = 'Total Cholesterol'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -240,6 +255,7 @@ parameter.procedure_id = 1
 parameter.name = 'HDL-cholesterol'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -249,6 +265,7 @@ parameter.procedure_id = 1
 parameter.name = 'Triglycerides'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -258,21 +275,17 @@ parameter.procedure_id = 1
 parameter.name = 'Glucose'
 parameter.datatype = 'decimal' 
 parameter.datamin = str(0)
+parameter.unit = 'mg/dl'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
 
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 1
-parameter.name = 'LIH (Hemolysis Severity - available on AU analysers)'
-parameter.datatype = 'text' 
-db.session.add(parameter)
-db.session.commit()
 
 parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Fructosamine'
 parameter.datatype = 'decimal' 
+parameter.unit = 'umol/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -281,6 +294,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Lipase'
 parameter.datatype = 'decimal' 
+parameter.unit = 'U/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -289,6 +303,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Lactate dehydrogenase'
 parameter.datatype = 'decimal' 
+parameter.unit = 'U/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -297,6 +312,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Alpha-amylase'
 parameter.datatype = 'decimal' 
+parameter.unit = 'U/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -305,6 +321,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'UIBC (unsaturated iron binding capacity)'
 parameter.datatype = 'decimal' 
+parameter.unit = 'umol/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -313,6 +330,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'LDL-cholesterol'
 parameter.datatype = 'decimal' 
+parameter.unit = 'mg/dl'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -321,6 +339,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Free fatty acids'
 parameter.datatype = 'decimal' 
+parameter.unit = 'mmol/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -329,6 +348,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Glycerol'
 parameter.datatype = 'decimal' 
+parameter.unit = 'mmol/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -337,6 +357,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Creatine kinase'
 parameter.datatype = 'decimal' 
+parameter.unit = 'U/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -345,6 +366,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Uric acid'
 parameter.datatype = 'decimal' 
+parameter.unit = 'umol/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -353,6 +375,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Ferritin'
 parameter.datatype = 'decimal' 
+parameter.unit = 'ng/ml'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -361,6 +384,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Transferrin'
 parameter.datatype = 'decimal' 
+parameter.unit = 'mg/dl'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -369,6 +393,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'C-reactive protein'
 parameter.datatype = 'decimal' 
+parameter.unit = 'mg/l'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -377,6 +402,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Glycosilated hemoglobin A1c (HbA1c)'
 parameter.datatype = 'decimal' 
+parameter.unit = '%'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -385,6 +411,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Thyroxine'
 parameter.datatype = 'decimal' 
+parameter.unit = 'ug/dl'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -393,6 +420,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Magnesium'
 parameter.datatype = 'decimal' 
+parameter.unit = 'mg/dl'
 parameter.datamin = str(0)
 db.session.add(parameter)
 db.session.commit()
@@ -469,6 +497,7 @@ parameter = ParametersModels.Parameters()
 parameter.procedure_id = 1
 parameter.name = 'Storage temperature from blood collection till measurement'
 parameter.datatype = 'decimal' 
+parameter.unit = 'C'
 parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
@@ -481,13 +510,6 @@ parameter.required = 1
 db.session.add(parameter)
 db.session.commit()
 
-parameter = ParametersModels.Parameters()
-parameter.procedure_id = 1
-parameter.name = 'Date and time of blood collection'
-parameter.datatype = 'datetime' 
-parameter.required = 1
-db.session.add(parameter)
-db.session.commit()
 
 
 schedule = SchedulesModels.Schedules()
@@ -545,6 +567,56 @@ schedule.users.append(User.query.get(1))
 for i in range(int(fakes/2), fakes):
 	schedule.specimens.append(SpecimensModels.Specimens.query.get(i))
 db.session.add(schedule)
+db.session.commit()
+
+
+
+procedure = ProceduresModels.Procedures()
+procedure.project_id = 1
+procedure.name = 'Heart Weight'
+procedure.description = 'To evaluate cardiac size using heart weight and body weight.'
+db.session.add(procedure)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 2
+parameter.name = 'Tibia length'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.unit = 'mm'
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 2
+parameter.name = 'Body weight'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.unit = 'g'
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+parameter = ParametersModels.Parameters()
+parameter.procedure_id = 2
+parameter.name = 'Heart weight'
+parameter.datatype = 'decimal' 
+parameter.datamin = str(0)
+parameter.unit = 'mg'
+parameter.required = 1
+db.session.add(parameter)
+db.session.commit()
+
+
+
+schedule = SchedulesModels.Schedules()
+schedule.start_datetime = str((date.today() - timedelta(days=1)).strftime("%Y-%m-%d")) + 'T10:00'
+schedule.end_datetime = str((date.today() - timedelta(days=1)).strftime("%Y-%m-%d")) + 'T11:00'
+schedule.procedure_id = 2
+schedule.users.append(User.query.get(1))
+for i in range(1,int(fakes/2)):
+	schedule.specimens.append(SpecimensModels.Specimens.query.get(i))
+db.session.add(schedule)
 db.session.flush()
 
 
@@ -560,19 +632,12 @@ for specimen in schedule.specimens:
         datapoint = SiteModels.DataPoints()
         data_type = parameter.get_datatype()
     
-        data_value = round(random.uniform(150.5, 165.5) + (random.choice([1,2,3]) * random.uniform(1,2)), 2)
+        data_value = round(random.uniform(10.1, 30.0) + (random.choice([1,2,3]) * random.uniform(1,2)), 2)
         classInstance = datapoint.get_by_value(data_type, data_value)
         
         if not classInstance:
             classInstance = datapoint.get_class_by_string(data_type)
-
-            if data_type == 'Option':
-                classInstance.option_id = parameter.options[random.choice([1, 2])].id
-            elif data_type == 'Datetime':
-            	classInstance.value = date.today()
-            else:
-                classInstance.value = data_value
-
+            classInstance.value = data_value
             db.session.add(classInstance)
             db.session.flush()
         datapoint.experiment_id = experiment.id
@@ -580,5 +645,17 @@ for specimen in schedule.specimens:
         datapoint.data_point_id = classInstance.id
         db.session.add(datapoint)
         db.session.flush()
+db.session.commit()
+
+
+
+schedule = SchedulesModels.Schedules()
+schedule.start_datetime = str((date.today() + timedelta(days=2)).strftime("%Y-%m-%d")) + 'T10:00'
+schedule.end_datetime = str((date.today() + timedelta(days=2)).strftime("%Y-%m-%d")) + 'T11:00'
+schedule.procedure_id = 2
+schedule.users.append(User.query.get(1))
+for i in range(int(fakes/2), fakes):
+	schedule.specimens.append(SpecimensModels.Specimens.query.get(i))
+db.session.add(schedule)
 db.session.commit()
 

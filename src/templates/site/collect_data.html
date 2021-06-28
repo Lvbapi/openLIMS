@@ -26,10 +26,10 @@
         <div class="ui tab segment {% if loop.first %}active{% endif %}" data-tab="{{ i }}">
           <lable class="ui blue ribbon label">{{ specimen.name }}</lable>
             {% for parameter in schedule.get_procedure().parameters %}
-            {% if loop.index % 4 == 1 %}
+            {% if loop.index % 3 == 1 %}
               <div class="fields">
             {% endif %}
-                <div class="field {% if parameter.required %}error{% endif %}">
+                <div class="field {% if parameter.required %}required{% endif %}">
                   <label for='[{{ parameter }}][{{ i }}]'>{{ parameter.name|uc_words }}</label>
 
                   {% set datatype = parameter.get_datatype() %}
@@ -42,13 +42,26 @@
                         </select>
 
                   {% elif datatype == 'Decimal' %}
-                    
+
+                      <div class="ui {% if parameter.unit %}right labeled{% endif %} input">
                         <input type='number' step="0.01" min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
-                      
+                        {% if parameter.unit %}
+                          <div class="ui basic label">
+                            {{ parameter.unit }}
+                          </div>
+                        {% endif %}
+                      </div>
 
                   {% elif datatype == 'Integer' %}
-                    
+
+                      <div class="ui {% if parameter.unit %}right labeled{% endif %} input">
                         <input type='number' min="{{ parameter.datamin }}" max='{{ parameter.datamax }}' name='[{{ parameter }}][{{ i }}]' {% if parameter.required %}required{% endif %}>
+                        {% if parameter.unit %}
+                          <div class="ui basic label">
+                            {{ parameter.unit }}
+                          </div>
+                        {% endif %}
+                      </div>
 
                   {% elif datatype == 'Character' %}
                     
@@ -83,7 +96,7 @@
                         <p class="ui red text">There was an error retrieving this parameter</p>
                     {% endif %}
                   </div>
-                {% if loop.index % 4 == 0 or loop.last %}
+                {% if loop.index % 3 == 0 or loop.last %}
                   </div>
                 {% endif %}
                 {% endfor %}

@@ -15,6 +15,7 @@
 			      	<th>Parameter</th>
 			      	<th>Required</th>
 			      	<th>Data Type</th>
+			      	<th>Unit</th>
 			      	<th>Data Min</th>
 			      	<th>Data Max</th>
 			      	<th>Options</th>
@@ -30,6 +31,11 @@
 				      	<td><a href="{{ url_for('parameters.view', parameter_id=parameter.id) }}">{{ parameter.name }}</a></td>
 				      	<td>{{ parameter.required }}</td>
 				      	<td>{{ parameter.get_datatype() }}</td>
+				      	<td>
+				      		{% if parameter.unit %}
+				      			{{ parameter.unit }}
+				      		{% endif %}
+				      	</td>
 				      	<td>
 				      		{% if parameter.datamin %}
 				      			{{ parameter.datamin }}
@@ -54,4 +60,12 @@
 		</table>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+	$(document).ready(function(){
+	  $('table.striped.table').DataTable();
+	})
+</script>
 {% endblock %}

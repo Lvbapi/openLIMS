@@ -12,6 +12,7 @@ class AddParameters(form.Form):
 		('file', 'File'), ('option', 'Option')])
 	datamin = fields.StringField('Min Value or Length')
 	datamax = fields.StringField('Max Value or Length')
+	unit = fields.StringField('Unit')
 	required = fields.BooleanField('Required')
 
 

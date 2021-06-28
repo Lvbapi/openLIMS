@@ -33,6 +33,7 @@ class Parameters(db.Model):
   datatype = db.Column(db.Enum(DataTypes), default=DataTypes.character, nullable=False)
   datamin = db.Column(db.String)
   datamax = db.Column(db.String)
+  unit = db.Column(db.String)
   required = db.Column(db.Boolean)
   options = db.relationship('Options', secondary=options_parameters, backref=db.backref('parameters',
     cascade='all, delete', lazy='dynamic'))
