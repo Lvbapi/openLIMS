@@ -8,7 +8,7 @@
     {% if current_user.is_authenticated %}
     <a class="item inverted" href="{{ url_for('site.dashboard') }}">Dashboard</a>
 
-    <div class="ui dropdown item">
+    <div class="ui simple dropdown item">
       Schedule
        <i class="dropdown icon" aria-hidden="true"></i>
        <div class="menu">
@@ -17,7 +17,7 @@
        </div>
      </div>
 
-    <div class="ui dropdown item">
+    <div class="ui simple dropdown item">
       Entities
        <i class="dropdown icon" aria-hidden="true"></i>
        <div class="menu">
@@ -34,17 +34,25 @@
        <i class="dropdown icon" aria-hidden="true"></i>
        <div class="menu">
           {% set projects = get_projects %}
-          {% for project in projects %}
-            <div class="item">
-              <i class="dropdown icon"></i>
-              <span class="text">{{ project.name }}</span>
-              <div class="menu">
-                {% for procedure in project.procedures %}
-                  <a class="item" href="{{ url_for('site.procedure_data', procedure_id=procedure.id) }}">{{ procedure.name }}</a>
-                {% endfor %}
+          {% if projects|count > 1 %}
+            {% for project in projects %}
+              <div class="item">
+                <i class="dropdown icon"></i>
+                <span class="text">{{ project.name }}</span>
+                <div class="menu">
+                  {% for procedure in project.procedures %}
+                    <a class="item" href="{{ url_for('site.procedure_data', procedure_id=procedure.id) }}">{{ procedure.name }}</a>
+                  {% endfor %}
+                </div>
               </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
+          {% else %}
+            {% for project in projects %}
+              {% for procedure in project.procedures %}
+                <a class="item" href="{{ url_for('site.procedure_data', procedure_id=procedure.id) }}">{{ procedure.name }}</a>
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
        </div>
      </div>
 

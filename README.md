@@ -36,7 +36,4 @@ work with larger data sets:
 - test load times, and create new ways to get data faster
 - make sure views work with data sets of all sizes
 
-consitant views
-- tables should look the same even if not using datatables plugin
-- admin views need rework
 
