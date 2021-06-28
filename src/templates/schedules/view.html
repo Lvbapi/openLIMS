@@ -44,6 +44,7 @@
           {% if loop.first %}
             <thead>
               <tr>
+                <th>Specimen</th>
                 {% for parameter in experiment.get_procedure().parameters %}
                   <th>{{ parameter.name|uc_words }}</th>
                 {% endfor %}
@@ -52,6 +53,7 @@
             <tbody>
           {% endif %}
           <tr>
+            <td>{{ experiment.get_specimen() }}</td>
             {% for datapoint in experiment.data_points %}
               <td>{{ datapoint.get_value() }}</td>
             {% endfor %}
