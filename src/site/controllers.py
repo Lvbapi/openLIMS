@@ -142,3 +142,23 @@ def outliers(parameter_id):
         data_points.append(float(point.get_value()))
     data = get_iqr_range(data_points)
     return render_template("/site/outliers.html", data=data, parameter=parameter)
+
+
+@site.route('/charts', methods=['GET', 'POST'])
+@check_login
+def charts():
+    form = SiteForms.ChartForm(request.form)
+    if request.method == 'POST':
+        parameter_a = form.data['parameter_id_a']
+        parameter_b = form.data['parameter_id_b']
+        data = {}
+        for data_point in parameter_a.data_points:
+            specimen_name = data_point.get_specimen_name()
+            data[specimen_name] = []
+            data[specimen_name].append(data_point.get_value())
+        for data_point in parameter_b.data_points:
+            specimen_name = data_point.get_specimen_name()
+            data[specimen_name].append(data_point.get_value())
+        return render_template("/site/charts.html", parameter_a=parameter_a, parameter_b=parameter_b, data=data, has_data=True,
+            form=form)
+    return render_template("/site/charts.html", has_data=False, form=form)

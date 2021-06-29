@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Chart{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.1.2/css/highcharts.min.css" integrity="sha512-6H4CAFO0Xop3NNAfLog/teJ+kV8xFv4Hid1P+/kRqh363117pHHgTxkvwQRPpyKyvckHKpJwpD76GNjMGTT2gQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block content %}
+<div class="ui one column grid container">
+     <div class="column">
+     	<h3>Select 2 parameters to compare</h3>
+	 	<form action="{{ url_for('site.charts') }}" method="POST" class="ui equal width form">
+	 		<div class="fields">
+			  	{% for f in form %}
+		         	<div class="field">
+			            {% if f.name == 'id' %}
+			              {{ f }}
+			            {% else %}
+			              {{ f.label }}
+			              {{ f }}
+			            {% endif %}
+			        </div>
+			    {% endfor %}
+			</div>
+		    <button type='submit' class="ui blue right floated button">Submit</button>
+		</form>
+      <div id="container" style="width:100%; height:600px;"></div>
+     </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.1.2/highcharts.js" integrity="sha512-prZV5wNX5I3fC7LuHbGSVaZdkGSaGozWsk6GjjDqulbi3kcummKxIiR7O5lFh2ec/M0AxlHC8zokmLco+SfD/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.1.2/highcharts-more.min.js" integrity="sha512-MO884SHO4pAr1sYtL/n2E1ZvsWTrAF80L0wf8UiUduo1hi7e9glE+3AHUkNrp6zrRdBcn4ExayxNoKgD3fz3pA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+	{% if has_data %}
+		$(document).ready( function () {
+	        Highcharts.chart('container', {
+			    chart: {
+			        type: 'scatter',
+			        zoomType: 'xy'
+			    },
+			    title: {
+			        text: '{{ parameter_a.name }} Versus {{ parameter_b.name }}'
+			    },
+			    xAxis: {
+			        title: {
+			            enabled: true,
+			            text: '{{ parameter_a.name }} {{ parameter_a.unit }}'
+			        },
+			        startOnTick: true,
+			        endOnTick: true,
+			        showLastLabel: true
+			    },
+			    yAxis: {
+			        title: {
+			            text: '{{ parameter_b.name }} {{ parameter_b.unit }}'
+			        }
+			    },
+			    plotOptions: {
+			        scatter: {
+			            marker: {
+			                radius: 5,
+			                states: {
+			                    hover: {
+			                        enabled: true,
+			                    }
+			                }
+			            },
+			            states: {
+			                hover: {
+			                    marker: {
+			                        enabled: false
+			                    }
+			                }
+			            },
+			            
+			        }
+			    },
+			    tooltip: {
+	            	formatter: function(){
+                     var string = 'Specimen: ' + this.point.name + '<br>{{ parameter_a.name }}: '+this.x+' {{ parameter_a.unit }}<br>{{ parameter_b.name }}: '+this.y+' {{ parameter_b.unit }}';
+                     return string;
+                     },
+	            },
+			    series: [{
+			    	name: 'Data Point',
+			        data: [
+			        	{% for specimen, data_point in data.items() %}
+			        		{'x': {{ data_point[0] }}, 'y': {{ data_point[1] }}, 'name': '{{ specimen }}' },
+			        	{% endfor %}
+			        ]
+
+			    }]
+			});
+	    });
+	{% endif %}    
+</script>
+{% endblock %}

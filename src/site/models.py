@@ -24,6 +24,9 @@ class Experiments(db.Model):
   attributes = association_proxy('attribute_values', 'value', 
     creator=lambda k, v: Value(k,v))
 
+  def __repr__(self):
+    return str({'specimen': self.get_specimen().name, 'data': self.data_points})
+
   def get_date(self):
     schedule = Schedules.query.get(self.schedule_id)
     return schedule.start_datetime
@@ -106,8 +109,15 @@ class DataPoints(db.Model):
   parameter_id = db.Column(db.Integer, db.ForeignKey('parameters.id'), nullable=False)
   data_point_id = db.Column(db.Integer)
 
+  def __repr__(self):
+    return str({'parameter': self.get_parameter().name, 'value': self.get_value()}) 
+
   def get_parameter(self):
     return Parameters.query.filter(Parameters.id==self.parameter_id).first()
+
+  def get_specimen_name(self):
+    experiment = Experiments.query.get(self.experiment_id)
+    return experiment.get_specimen().name
 
   def get_value(self):
     data_type = self.get_parameter().get_datatype()
